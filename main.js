@@ -4,16 +4,21 @@ const topMenu = document.querySelector(".desktop-menu");
 const menuHamIcon = document.querySelector(".menu");
 const mobileMenu = document.querySelector(".mobile-menu");
 //Aqui estamos seleccionando las clases del ccs
-
+//Se dice que estamos creandoselectores
 const menuCarritoIcon = document.querySelector(".navbar-shopping-cart")
 const aside = document.querySelector(".product-detail");
 
 const cardsContainer = document.querySelector(".cards-container");
 
+const productDetailContainerSecondary = document.querySelector(".product-detail-secondary")
+const productDetailSecondaryCloseIcon = document.querySelector(".product-detail-secondary-close")
+
 
 menuEmail.addEventListener('click', toggleDesktopMenu);
 menuHamIcon.addEventListener('click', toggleMobileMenu);
 menuCarritoIcon.addEventListener('click', toggleCarritoAside);
+//Aqui estamos llamando funciones
+productDetailSecondaryCloseIcon.addEventListener('click', closeProductDetailAsideSecondary);
 
 
 
@@ -37,6 +42,8 @@ function toggleMobileMenu() {
 
     mobileMenu.classList.toggle('inactive');
     console.log("Mobile");
+
+    closeProductDetailAsideSecondary();
 }
 
 function toggleCarritoAside() {
@@ -53,8 +60,24 @@ function toggleCarritoAside() {
 
     aside.classList.toggle('inactive');
 
+    const IsProductDetailSecClosed = productDetailContainerSecondary.classList.contains('inactive')
+    if (!IsProductDetailSecClosed) {
+        productDetailContainerSecondary.classList.add('inactive');
+    }
+
 
 }
+
+function openProductDetailAsideSecondary() {
+    aside.classList.add('inactive')
+    productDetailContainerSecondary.classList.remove('inactive');
+}
+
+function closeProductDetailAsideSecondary() {
+    productDetailContainerSecondary.classList.add('inactive');
+
+}
+
 
 const productList = [];
 productList.push({
@@ -89,45 +112,52 @@ productList.push({
 //         </div>
 //     </div>
 
+function renderProducts(arr) {
 
-for (product of productList) {
-    const productCard = document.createElement('div');
-    productCard.classList.add('product-card');
+    for (product of arr) {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
 
-    const productImg = document.createElement('img');
-    productImg.setAttribute('src', product.image);
+        const productImg = document.createElement('img');
+        productImg.setAttribute('src', product.image);
+        productImg.addEventListener('click', openProductDetailAsideSecondary);
 
-    const productInfo = document.createElement('div');
-    productInfo.classList.add('product-info');
+        const productInfo = document.createElement('div');
+        productInfo.classList.add('product-info');
 
-    const productInfoDiv = document.createElement('div');
+        const productInfoDiv = document.createElement('div');
 
-    const productPrice = document.createElement('p');
-    productPrice.innerText = '$' + product.price;
-    const productName = document.createElement('p');
-    productName.innerText = product.name;
+        const productPrice = document.createElement('p');
+        productPrice.innerText = '$' + product.price;
+        const productName = document.createElement('p');
+        productName.innerText = product.name;
 
-    productInfoDiv.appendChild(productPrice);
-    productInfoDiv.appendChild(productName);
+        productInfoDiv.appendChild(productPrice);
+        productInfoDiv.appendChild(productName);
 
 
-    const productInfoFigure = document.createElement('figure');
-    const productImgCart = document.createElement('img');
-    productImgCart.setAttribute('src', './icons/bt_add_to_cart.svg');
+        const productInfoFigure = document.createElement('figure');
+        const productImgCart = document.createElement('img');
+        productImgCart.setAttribute('src', './icons/bt_add_to_cart.svg');
 
-    productInfoFigure.appendChild(productImgCart);
+        productInfoFigure.appendChild(productImgCart);
 
-    productInfo.appendChild(productInfoDiv);
-    productInfo.appendChild(productInfoFigure);
+        productInfo.appendChild(productInfoDiv);
+        productInfo.appendChild(productInfoFigure);
 
-    productCard.appendChild(productImg);
-    productCard.appendChild(productInfo);
+        productCard.appendChild(productImg);
+        productCard.appendChild(productInfo);
 
-    cardsContainer.appendChild(productCard);
+        cardsContainer.appendChild(productCard);
 
+    }
 }
+
+renderProducts(productList);
 
 {/* //Primero tenemos que crear un selector
 //para que aparezca o desaparezca el mobile
 //menu, pero tambien necesitamos un selector
 //para el menú hamburguesa  */}
+
+//La función Toggle es para abrir y cerrar
